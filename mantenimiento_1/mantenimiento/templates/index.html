@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - Sistema de Mantenimiento{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Sistema de Gestión de Mantenimiento</h1>
+        <div>
+            <a href="{{ url_for('agregar_equipo') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Nuevo Equipo
+            </a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Equipos Registrados</h5>
+        </div>
+        <div class="card-body">
+            {% if equipos %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Modelo</th>
+                                <th>Ubicación</th>
+                                <th>Departamento</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for equipo in equipos %}
+                            <tr>
+                                <td>{{ equipo.id }}</td>
+                                <td>{{ equipo.nombre }}</td>
+                                <td>{{ equipo.modelo }}</td>
+                                <td>{{ equipo.ubicacion }}</td>
+                                <td>{{ equipo.departamento }}</td>
+                                <td>
+                                    <a href="{{ url_for('editar_equipo', id=equipo.id) }}" 
+                                       class="btn btn-warning btn-sm" 
+                                       title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="{{ url_for('eliminar_equipo', id=equipo.id) }}" 
+                                       class="btn btn-danger btn-sm" 
+                                       onclick="return confirm('¿Está seguro de eliminar este equipo?')"
+                                       title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    No hay equipos registrados. Use el botón "Nuevo Equipo" para agregar uno.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .btn i {
+        margin-right: 0.5rem;
+    }
+    .card {
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    }
+</style>
+{% endblock %}

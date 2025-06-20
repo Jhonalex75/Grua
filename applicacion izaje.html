@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Interactiva ASME B30</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilos adicionales si son necesarios */
+        .content-section {
+            display: none; /* Ocultar secciones por defecto */
+        }
+        .active-section {
+            display: block; /* Mostrar sección activa */
+        }
+        /* Estilo para el botón de menú en móviles */
+        @media (max-width: 768px) {
+            #main-nav {
+                display: none;
+            }
+            #main-nav.show {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <header class="bg-sky-700 text-white p-6 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold">🏗️ Aplicación Interactiva ASME B30</h1>
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <nav id="main-nav" class="bg-sky-600 text-white p-4 md:block">
+        <div class="container mx-auto flex flex-col md:flex-row md:justify-around space-y-2 md:space-y-0">
+            <a href="#" class="nav-link hover:bg-sky-500 p-2 rounded" data-section="intro">Introducción ASME B30</a>
+            <a href="#" class="nav-link hover:bg-sky-500 p-2 rounded" data-section="simulador">Simulador Plan de Izaje</a>
+            <a href="#" class="nav-link hover:bg-sky-500 p-2 rounded" data-section="modulos">Módulos Educativos</a>
+            <a href="#" class="nav-link hover:bg-sky-500 p-2 rounded" data-section="responsabilidades">Calificaciones y Responsabilidades</a>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-6">
+
+        <section id="intro" class="content-section active-section bg-white p-6 rounded-lg shadow">
+            <h2 class="text-2xl font-semibold text-sky-700 mb-4">Bienvenido a la Aplicación Interactiva ASME B30</h2>
+            <p class="text-gray-700 mb-3">
+                Esta aplicación está diseñada para ayudarte a comprender y aplicar las normas ASME B30, fundamentales para la seguridad en operaciones de izaje y manejo de cargas.
+            </p>
+            <p class="text-gray-700 mb-3">
+                La serie de normas ASME B30 establece los estándares para el diseño, construcción, inspección, prueba, mantenimiento y operación de diversos equipos de elevación.
+            </p>
+            <div class="bg-sky-50 p-4 rounded-md border border-sky-200">
+                <h3 class="text-lg font-semibold text-sky-600 mb-2">Propósito Principal de ASME B30:</h3>
+                <ul class="list-disc list-inside text-gray-600 space-y-1">
+                    <li>Prevenir o minimizar lesiones a los trabajadores.</li>
+                    <li>Proporcionar directrices a fabricantes, propietarios, empleadores y operadores.</li>
+                    <li>Guiar a gobiernos y organismos reguladores en el desarrollo de políticas de seguridad.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="simulador" class="content-section bg-white p-6 rounded-lg shadow">
+            <h2 class="text-2xl font-semibold text-sky-700 mb-4">📝 Simulador de Plan de Izaje (Básico)</h2>
+            <p class="text-gray-600 mb-6">Complete los siguientes campos para iniciar la planificación de un izaje. Esta es una simulación básica para ilustrar los conceptos.</p>
+            <form id="izaje-form" class="space-y-6">
+                <div>
+                    <label for="peso-carga" class="block text-sm font-medium text-gray-700">Peso total de la carga a izar (kg):</label>
+                    <input type="number" id="peso-carga" name="peso-carga" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm" placeholder="Ej: 5000">
+                </div>
+
+                <div>
+                    <label for="tipo-grua" class="block text-sm font-medium text-gray-700">Tipo de grúa (según ASME B30.X):</label>
+                    <select id="tipo-grua" name="tipo-grua" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                        <option value="">Seleccione un tipo</option>
+                        <option value="B30.5">Grúa Móvil y Locomotora (B30.5)</option>
+                        <option value="B30.3">Grúa Torre (B30.3)</option>
+                        <option value="B30.2">Grúa Puente y Pórtico (B30.2)</option>
+                        <option value="B30.16">Polipastos Suspendidos (B30.16)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="config-equipo" class="block text-sm font-medium text-gray-700">Configuración del equipo y aparejos:</label>
+                    <textarea id="config-equipo" name="config-equipo" rows="3" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm" placeholder="Describa la pluma, contrapesos, eslingas (B30.9), ganchos (B30.10), grilletes (B30.26), etc."></textarea>
+                </div>
+
+                <div>
+                    <label for="lugar-grua" class="block text-sm font-medium text-gray-700">Lugar de colocación (cimentación/terreno):</label>
+                    <input type="text" id="lugar-grua" name="lugar-grua" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm" placeholder="Ej: Terreno compactado, verificar estudio de suelos">
+                </div>
+                 <div>
+                    <label for="radio-izaje" class="block text-sm font-medium text-gray-700">Radio de Izaje (metros):</label>
+                    <input type="number" id="radio-izaje" name="radio-izaje" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm" placeholder="Ej: 10">
+                </div>
+                 <div>
+                    <label for="longitud-pluma" class="block text-sm font-medium text-gray-700">Longitud de Pluma (metros):</label>
+                    <input type="number" id="longitud-pluma" name="longitud-pluma" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm" placeholder="Ej: 30">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Condiciones ambientales:</label>
+                    <div class="mt-1 space-y-2">
+                        <div class="flex items-center">
+                            <input id="viento-check" name="viento-check" type="checkbox" class="h-4 w-4 text-sky-600 border-gray-300 rounded focus:ring-sky-500">
+                            <label for="viento-check" class="ml-2 block text-sm text-gray-900">¿Velocidad del viento dentro de límites seguros?</label>
+                        </div>
+                        <input type="number" id="viento-velocidad" name="viento-velocidad" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm" placeholder="Velocidad del viento (km/h) si aplica">
+                        <div class="flex items-center">
+                            <input id="visibilidad-check" name="visibilidad-check" type="checkbox" class="h-4 w-4 text-sky-600 border-gray-300 rounded focus:ring-sky-500">
+                            <label for="visibilidad-check" class="ml-2 block text-sm text-gray-900">¿Buena visibilidad?</label>
+                        </div>
+                         <div class="flex items-center">
+                            <input id="lluvia-check" name="lluvia-check" type="checkbox" class="h-4 w-4 text-sky-600 border-gray-300 rounded focus:ring-sky-500">
+                            <label for="lluvia-check" class="ml-2 block text-sm text-gray-900">¿Presencia de lluvia/tormentas eléctricas?</label>
+                        </div>
+                    </div>
+                </div>
+                 <div>
+                    <label for="personal-calificado" class="block text-sm font-medium text-gray-700">Personal calificado:</label>
+                     <div class="mt-1 space-y-2">
+                        <div class="flex items-center">
+                            <input id="operador-check" name="operador-check" type="checkbox" class="h-4 w-4 text-sky-600 border-gray-300 rounded focus:ring-sky-500">
+                            <label for="operador-check" class="ml-2 block text-sm text-gray-900">Operador calificado y certificado</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input id="aparejador-check" name="aparejador-check" type="checkbox" class="h-4 w-4 text-sky-600 border-gray-300 rounded focus:ring-sky-500">
+                            <label for="aparejador-check" class="ml-2 block text-sm text-gray-900">Aparejador/Señalero calificado</label>
+                        </div>
+                         <div class="flex items-center">
+                            <input id="supervisor-check" name="supervisor-check" type="checkbox" class="h-4 w-4 text-sky-600 border-gray-300 rounded focus:ring-sky-500">
+                            <label for="supervisor-check" class="ml-2 block text-sm text-gray-900">Supervisor de Izaje designado</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" id="simular-btn" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                    Evaluar Plan de Izaje (Próximamente Simulación)
+                </button>
+                 <div id="simulador-resultado" class="mt-4 p-4 bg-gray-50 rounded-md border border-gray-200 hidden">
+                    <h3 class="text-lg font-semibold text-sky-700">Resultado de la Evaluación (Preliminar):</h3>
+                    <p id="resultado-texto" class="text-gray-700"></p>
+                </div>
+            </form>
+        </section>
+
+        <section id="modulos" class="content-section bg-white p-6 rounded-lg shadow">
+            <h2 class="text-2xl font-semibold text-sky-700 mb-4">📚 Módulos Educativos</h2>
+            <p class="text-gray-600 mb-6">Selecciona un tema para aprender más sobre las normas ASME B30 y prácticas seguras.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="module-item bg-sky-50 hover:bg-sky-100 p-4 rounded-lg shadow cursor-pointer border border-sky-200" data-module="tipos_gruas">
+                    <h3 class="text-lg font-semibold text-sky-600">Tipos de Grúas y Partes</h3>
+                    <p class="text-sm text-gray-500">Constitutivas, capacidades y limitaciones.</p>
+                </div>
+                <div class="module-item bg-sky-50 hover:bg-sky-100 p-4 rounded-lg shadow cursor-pointer border border-sky-200" data-module="inspecciones">
+                    <h3 class="text-lg font-semibold text-sky-600">Inspecciones</h3>
+                    <p class="text-sm text-gray-500">Tipos y clasificación (inicial, regular, frecuente, periódica).</p>
+                </div>
+                <div class="module-item bg-sky-50 hover:bg-sky-100 p-4 rounded-lg shadow cursor-pointer border border-sky-200" data-module="pruebas">
+                    <h3 class="text-lg font-semibold text-sky-600">Pruebas Operacionales y de Carga</h3>
+                    <p class="text-sm text-gray-500">Procedimientos y criterios.</p>
+                </div>
+                <div class="module-item bg-sky-50 hover:bg-sky-100 p-4 rounded-lg shadow cursor-pointer border border-sky-200" data-module="practicas_seguras">
+                    <h3 class="text-lg font-semibold text-sky-600">Prácticas Operativas Seguras</h3>
+                    <p class="text-sm text-gray-500">Directrices generales.</p>
+                </div>
+                <div class="module-item bg-sky-50 hover:bg-sky-100 p-4 rounded-lg shadow cursor-pointer border border-sky-200" data-module="senales">
+                    <h3 class="text-lg font-semibold text-sky-600">Señales Estándar</h3>
+                    <p class="text-sm text-gray-500">Comunicación con el operador (mano y voz).</p>
+                </div>
+                <div class="module-item bg-sky-50 hover:bg-sky-100 p-4 rounded-lg shadow cursor-pointer border border-sky-200" data-module="cables_ganchos">
+                    <h3 class="text-lg font-semibold text-sky-600">Cables de Acero y Ganchos</h3>
+                    <p class="text-sm text-gray-500">Inspección y cuidado.</p>
+                </div>
+                <div class="module-item bg-sky-50 hover:bg-sky-100 p-4 rounded-lg shadow cursor-pointer border border-sky-200" data-module="lineas_electricas">
+                    <h3 class="text-lg font-semibold text-sky-600">Operaciones Cerca de Líneas Eléctricas</h3>
+                    <p class="text-sm text-gray-500">Procedimientos y precauciones.</p>
+                </div>
+            </div>
+            <div id="module-content-area" class="mt-6 p-4 bg-gray-50 rounded-md border border-gray-200 hidden">
+                </div>
+        </section>
+
+        <section id="responsabilidades" class="content-section bg-white p-6 rounded-lg shadow">
+            <h2 class="text-2xl font-semibold text-sky-700 mb-4">👥 Calificaciones y Responsabilidades del Personal</h2>
+            <p class="text-gray-700 mb-3">
+                Un aspecto fundamental de las normas ASME B30 es la definición clara de las calificaciones y responsabilidades del personal involucrado en las operaciones de izaje. Esto incluye:
+            </p>
+            <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4 pl-4">
+                <li><strong>Operador de la grúa:</strong> Debe conocer a la perfección la grúa, sus limitaciones, el manual del fabricante, y ser capaz de reconocer condiciones peligrosas y detener la operación si es necesario. Debe estar calificado y, según regulaciones locales, certificado.</li>
+                <li><strong>Propietario de la grúa:</strong> Responsable de asegurar que la grúa esté en condiciones seguras de operación, cumpla con inspecciones y mantenimiento.</li>
+                <li><strong>Usuario de la grúa (empleador):</strong> Responsable de cumplir con las normas, asegurar que el personal sea competente, y supervisar las operaciones.</li>
+                <li><strong>Supervisor del área de izaje:</strong> Responsable de la coordinación de la operación de izaje y la seguridad en el sitio.</li>
+                <li><strong>Director de Izaje (Lift Director):</strong> Responsable general de la operación de izaje, supervisa todos los aspectos de la planificación y ejecución. Especialmente crucial para izajes críticos.</li>
+                <li><strong>Aparejador (Rigger):</strong> Responsable de la selección, inspección y conexión de los aparejos de izaje.</li>
+                <li><strong>Señalero (Signalperson):</strong> Responsable de transmitir las señales al operador de la grúa.</li>
+            </ul>
+            <div class="bg-yellow-50 p-4 rounded-md border border-yellow-200">
+                <p class="text-sm text-yellow-700">⚠️ <span class="font-semibold">Importante:</span> Las responsabilidades específicas pueden variar ligeramente según la norma ASME B30 particular aplicable al equipo y la operación. Siempre consulte la norma correspondiente.</p>
+            </div>
+        </section>
+
+
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center p-4 mt-8">
+        <p>&copy; <span id="currentYear"></span> Aplicación Interactiva ASME B30. Contenido basado en propuesta.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mainNav = document.getElementById('main-nav');
+            const moduleItems = document.querySelectorAll('.module-item');
+            const moduleContentArea = document.getElementById('module-content-area');
+            const simularBtn = document.getElementById('simular-btn');
+            const simuladorResultado = document.getElementById('simulador-resultado');
+            const resultadoTexto = document.getElementById('resultado-texto');
+
+            // Establecer año actual en el footer
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+            // Navegación entre secciones
+            function showSection(sectionId) {
+                contentSections.forEach(section => {
+                    if (section.id === sectionId) {
+                        section.classList.add('active-section');
+                        section.classList.remove('hidden'); // Tailwind compatible
+                    } else {
+                        section.classList.remove('active-section');
+                        section.classList.add('hidden'); // Tailwind compatible
+                    }
+                });
+                 // Ocultar menú móvil después de la selección
+                if (mainNav.classList.contains('show')) {
+                    mainNav.classList.remove('show');
+                }
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const sectionId = this.getAttribute('data-section');
+                    showSection(sectionId);
+
+                    // Resaltar link activo (opcional)
+                    navLinks.forEach(lnk => lnk.classList.remove('bg-sky-700', 'font-semibold'));
+                    this.classList.add('bg-sky-700', 'font-semibold');
+                });
+            });
+
+            // Mostrar la primera sección (intro) por defecto y marcar el link
+            showSection('intro');
+            document.querySelector('.nav-link[data-section="intro"]').classList.add('bg-sky-700', 'font-semibold');
+
+
+            // Menú móvil
+            mobileMenuButton.addEventListener('click', function () {
+                mainNav.classList.toggle('show');
+            });
+
+            // Contenido de Módulos Educativos (placeholder)
+            const moduleContents = {
+                tipos_gruas: `
+                    <h3 class="text-xl font-semibold text-sky-700 mb-3">Tipos de Grúas y sus Partes</h3>
+                    <p class="mb-2">Las normas ASME B30 cubren una amplia variedad de grúas. Algunos ejemplos comunes incluyen:</p>
+                    <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                        <li><strong>B30.5: Grúas Móviles y Locomotoras:</strong> Grúas sobre orugas, sobre ruedas, montadas en camión comercial. Partes clave: pluma, plumín (jib), contrapesos, sistema de elevación (gancho, cable), estabilizadores.</li>
+                        <li><strong>B30.3: Grúas Torre:</strong> Usadas en construcción de edificios altos. Partes: torre, pluma horizontal o abatible, carro, gancho, contrapeso, base.</li>
+                        <li><strong>B30.2: Grúas Puente y de Pórtico:</strong> Se desplazan sobre rieles elevados (puente) o a nivel del suelo (pórtico). Partes: puente, testeros, carro, polipasto.</li>
+                    </ul>
+                    <p class="mt-3 text-gray-700">Cada tipo tiene capacidades y limitaciones específicas que deben ser entendidas por el operador y el personal de planificación.</p>
+                `,
+                inspecciones: `
+                    <h3 class="text-xl font-semibold text-sky-700 mb-3">Tipos y Clasificación de Inspecciones</h3>
+                    <p class="mb-2 text-gray-700">Las inspecciones son cruciales para garantizar la seguridad. ASME B30 define varios tipos:</p>
+                    <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                        <li><strong>Inspección Inicial:</strong> Antes del uso inicial o después de alteraciones/reparaciones mayores.</li>
+                        <li><strong>Inspección Frecuente:</strong> Intervalos diarios a mensuales. Registros no siempre requeridos. Incluye observaciones visuales por el operador o personal designado.</li>
+                        <li><strong>Inspección Periódica:</strong> Intervalos de 1 a 12 meses (o según lo recomiende el fabricante/una persona calificada). Más detallada, requiere registros fechados y firmados.</li>
+                        <li><strong>Inspección de Equipos que Han Estado Inactivos:</strong> Si una grúa ha estado inactiva por un mes o más (frecuente) o seis meses o más (periódica), se debe inspeccionar antes de volver a ponerla en servicio.</li>
+                    </ul>
+                    <p class="mt-3 text-sm text-gray-600"><em>Referencia: ASME B30 (volumen específico del equipo), por ejemplo, B30.5 para grúas móviles.</em></p>
+                `,
+                 pruebas: `
+                    <h3 class="text-xl font-semibold text-sky-700 mb-3">Pruebas Operacionales y de Carga</h3>
+                    <p class="mb-2 text-gray-700">Se requieren pruebas para asegurar el correcto funcionamiento de la grúa:</p>
+                    <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                        <li><strong>Pruebas Operacionales:</strong> Antes del inicio de cada turno o después de un cambio de operador, se deben probar todos los movimientos (elevación, descenso, giro, traslación de pluma, etc.) sin carga para asegurar su correcto funcionamiento.</li>
+                        <li><strong>Pruebas de Carga:</strong>
+                            <ul class="list-circle pl-5 space-y-1">
+                                <li><strong>Grúas Nuevas, Reinstaladas, Alteradas, Reparadas o Modificadas:</strong> Deben ser sometidas a prueba de carga antes del servicio inicial. Generalmente, la prueba se realiza con una carga entre el 100% y el 125% de la capacidad nominal (consultar la norma específica, ej. B30.5 no excede el 110% para la mayoría).</li>
+                                <li><strong>Propósito:</strong> Verificar la integridad estructural y funcional de la grúa bajo carga.</li>
+                                <li>Debe ser realizada por una persona calificada y documentada.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                     <p class="mt-3 text-sm text-gray-600"><em>Siempre verifique los requisitos específicos del volumen ASME B30 aplicable y las recomendaciones del fabricante.</em></p>
+                `,
+                practicas_seguras: `
+                    <h3 class="text-xl font-semibold text-sky-700 mb-3">Prácticas Operativas Seguras</h3>
+                    <p class="mb-2 text-gray-700">Principios generales para una operación segura:</p>
+                    <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                        <li>Planificación del izaje: Conocer la carga, ruta, entorno.</li>
+                        <li>Asegurar que la grúa esté nivelada y sobre terreno firme.</li>
+                        <li>No exceder la capacidad nominal de la grúa. Consultar tablas de carga.</li>
+                        <li>Mantener distancias seguras de líneas eléctricas.</li>
+                        <li>No operar con vientos fuertes u otras condiciones climáticas adversas.</li>
+                        <li>Asegurar una comunicación clara entre el operador y el señalero.</li>
+                        <li>No permitir que personal se ubique bajo cargas suspendidas.</li>
+                        <li>Inspeccionar los aparejos de izaje antes de cada uso.</li>
+                        <li>El operador debe estar atento y concentrado en la operación.</li>
+                    </ul>
+                `,
+                senales: `
+                    <h3 class="text-xl font-semibold text-sky-700 mb-3">Señales Estándar (Mano y Voz)</h3>
+                    <p class="mb-2 text-gray-700">La comunicación efectiva es vital. ASME B30.5 (para grúas móviles) y otros volúmenes especifican señales de mano estándar. También se pueden usar comunicaciones por voz (radio).</p>
+                    <p class="mb-2 text-gray-700"><strong>Principios clave:</strong></p>
+                    <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                        <li>Solo una persona designada (señalero) debe dar señales al operador, excepto en una señal de "PARADA DE EMERGENCIA" que puede ser dada por cualquiera.</li>
+                        <li>El operador debe obedecer una señal de parada de cualquiera.</li>
+                        <li>El señalero debe ser visible para el operador o estar en comunicación por voz clara.</li>
+                        <li>Si la comunicación se pierde, el operador debe detener el movimiento.</li>
+                    </ul>
+                    <p class="mt-2 text-gray-700"><em>(Aquí se podría incluir una galería interactiva de señales de mano).</em></p>
+                `,
+                cables_ganchos: `
+                    <h3 class="text-xl font-semibold text-sky-700 mb-3">Inspección y Cuidado de Cables de Acero (B30.5) y Ganchos (B30.10)</h3>
+                    <p class="mb-2 text-gray-700"><strong>Cables de Acero:</strong></p>
+                    <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                        <li>Inspeccionar diariamente por personal calificado. Inspecciones periódicas más detalladas.</li>
+                        <li>Criterios de remoción incluyen: alambres rotos, reducción del diámetro, desgaste, corrosión, cocas, aplastamiento, daño por calor.</li>
+                        <li>Lubricación adecuada según recomendaciones del fabricante.</li>
+                    </ul>
+                    <p class="mb-2 mt-3 text-gray-700"><strong>Ganchos (ASME B30.10):</strong></p>
+                     <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                        <li>Inspeccionar frecuentemente por deformaciones, grietas, desgaste excesivo en la garganta, y el correcto funcionamiento del pestillo de seguridad.</li>
+                        <li>Remover de servicio si hay grietas, desgaste que exceda el 10% de la sección original, o un aumento en la abertura de la garganta del 5% (no exceder 1/4 pulg o 6mm) o cualquier otra deformación visible.</li>
+                        <li>Las reparaciones por soldadura o calentamiento no están permitidas en la mayoría de los casos.</li>
+                    </ul>
+                `,
+                lineas_electricas: `
+                    <h3 class="text-xl font-semibold text-sky-700 mb-3">Operaciones Cerca de Líneas Eléctricas Energizadas</h3>
+                    <p class="mb-2 text-gray-700">¡EXTREMA PRECAUCIÓN! El contacto con líneas eléctricas es una de las principales causas de fatalidades con grúas.</p>
+                    <p class="mb-2 text-gray-700"><strong>ASME B30.5 establece distancias mínimas de aproximación (Tabla 5-3.4.5-1). Estas varían según el voltaje de la línea.</strong></p>
+                    <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                        <li><strong>Opción 1: Desenergizar y aterrizar</strong> la línea eléctrica. Confirmar con el propietario de la línea.</li>
+                        <li><strong>Opción 2: Mantener distancias mínimas:</strong>
+                            <ul class="list-circle pl-5">
+                                <li>Hasta 50 kV: Mínimo 10 pies (3.05 m)</li>
+                                <li>Más de 50 kV a 200 kV: Mínimo 15 pies (4.6 m)</li>
+                                <li>Más de 200 kV a 350 kV: Mínimo 20 pies (6.1 m)</li>
+                                <li>(Consultar la tabla completa en B30.5 para voltajes mayores y requisitos exactos)</li>
+                            </ul>
+                        </li>
+                        <li>Se debe designar un observador dedicado si es difícil para el operador mantener la distancia visualmente.</li>
+                        <li>Usar ayudas como barricadas o señales de advertencia.</li>
+                        <li>Considerar el balanceo de la carga y los movimientos de la grúa.</li>
+                    </ul>
+                     <p class="mt-3 text-sm text-red-600">⚡️ <strong>Advertencia:</strong> Estas son pautas generales. Siempre consulte la última versión de ASME B30.5 y las regulaciones locales (ej. OSHA en EE.UU.).</p>
+                `
+            };
+
+            moduleItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const moduleKey = this.getAttribute('data-module');
+                    moduleContentArea.innerHTML = moduleContents[moduleKey] || '<p>Contenido no disponible.</p>';
+                    moduleContentArea.classList.remove('hidden');
+
+                    // Resaltar item activo (opcional)
+                    moduleItems.forEach(i => i.classList.remove('bg-sky-200', 'ring-2', 'ring-sky-500'));
+                    this.classList.add('bg-sky-200', 'ring-2', 'ring-sky-500');
+                });
+            });
+
+            // Lógica básica del simulador (ejemplo de interactividad)
+            if(simularBtn) {
+                simularBtn.addEventListener('click', function() {
+                    const pesoCarga = parseFloat(document.getElementById('peso-carga').value);
+                    const tipoGrua = document.getElementById('tipo-grua').value;
+                    const configEquipo = document.getElementById('config-equipo').value;
+                    let mensajes = [];
+
+                    if (isNaN(pesoCarga) || pesoCarga <= 0) {
+                        mensajes.push("🔴 El peso de la carga debe ser un número positivo.");
+                    } else if (pesoCarga > 10000) { // Ejemplo de límite
+                        mensajes.push("⚠️ El peso de la carga es considerable. Asegúrese de que la grúa y los aparejos son adecuados y que es un izaje crítico planificado.");
+                    } else {
+                        mensajes.push("🟢 Peso de la carga ingresado: " + pesoCarga + " kg.");
+                    }
+
+                    if (!tipoGrua) {
+                        mensajes.push("🔴 Debe seleccionar un tipo de grúa.");
+                    } else {
+                        mensajes.push("🟢 Tipo de grúa seleccionado: " + tipoGrua + ".");
+                    }
+                    if (!configEquipo.trim()) {
+                        mensajes.push("🔴 Describa la configuración del equipo y aparejos.");
+                    }
+
+                    // Chequeos básicos adicionales (ejemplos)
+                    if (!document.getElementById('operador-check').checked) {
+                        mensajes.push("🔴 Es mandatorio que el operador esté calificado.");
+                    }
+                     if (!document.getElementById('aparejador-check').checked) {
+                        mensajes.push("🔴 Es mandatorio que el aparejador/señalero esté calificado.");
+                    }
+
+                    if (mensajes.length > 0) {
+                        resultadoTexto.innerHTML = mensajes.map(m => `<p class="${m.includes('🔴') ? 'text-red-600' : (m.includes('⚠️') ? 'text-yellow-600' : 'text-green-700')}">${m}</p>`).join('');
+                    } else {
+                        resultadoTexto.innerHTML = "<p class='text-green-700'>🟢 Datos básicos del plan ingresados. Proceda con la verificación detallada según ASME B30.</p>";
+                    }
+                    simuladorResultado.classList.remove('hidden');
+                });
+            }
+
+        });
+    </script>
+
+</body>
+</html>

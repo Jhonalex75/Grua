@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Editar Equipo</h1>
+    
+    <form method="POST" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Información General</h3>
+                <div class="form-group mb-3">
+                    <label>Nombre del Equipo</label>
+                    <input type="text" name="equipment_name" class="form-control" 
+                           value="{{ equipment.equipment_name }}" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label>Modelo</label>
+                    <input type="text" name="model_type" class="form-control" 
+                           value="{{ equipment.model_type }}" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label>Número de Serie</label>
+                    <input type="text" name="serial_number" class="form-control" 
+                           value="{{ equipment.serial_number }}" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label>Fabricante</label>
+                    <input type="text" name="manufacturer" class="form-control" 
+                           value="{{ equipment.manufacturer }}" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label>Fecha de Compra</label>
+                    <input type="date" name="purchase_date" class="form-control" 
+                           value="{{ equipment.purchase_date.strftime('%Y-%m-%d') }}" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label>Fecha de Instalación</label>
+                    <input type="date" name="installation_date" class="form-control" 
+                           value="{{ equipment.installation_date.strftime('%Y-%m-%d') }}" required>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <h3>Ubicación y Especificaciones</h3>
+                <div class="form-group mb-3">
+                    <label>Ubicación</label>
+                    <input type="text" name="location" class="form-control" 
+                           value="{{ equipment.location }}" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label>Departamento</label>
+                    <input type="text" name="department" class="form-control" 
+                           value="{{ equipment.department }}" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label>Especificaciones Técnicas</label>
+                    <textarea name="technical_specifications" class="form-control" 
+                              rows="3">{{ equipment.technical_specifications }}</textarea>
+                </div>
+                <div class="form-group mb-3">
+                    <label>Frecuencia de Mantenimiento (días)</label>
+                    <input type="number" name="maintenance_frequency" class="form-control" 
+                           value="{{ equipment.maintenance_frequency }}" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label>Agregar Nuevos Documentos</label>
+                    <input type="file" name="documents" class="form-control" multiple>
+                </div>
+            </div>
+        </div>
+
+        {% if equipment.documents %}
+        <div class="row mt-4">
+            <div class="col-12">
+                <h4>Documentos Actuales</h4>
+                <div class="list-group">
+                    {% for doc in equipment.documents.split(',') %}
+                        {% if doc %}
+                        <div class="list-group-item">
+                            <i class="fas fa-file me-2"></i>
+                            {{ doc }}
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                <a href="{{ url_for('view_equipment', id=equipment.id) }}" 
+                   class="btn btn-secondary">Cancelar</a>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
