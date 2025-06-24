@@ -1,0 +1,3 @@
+# Script de utilidad para cálculos y conversiones
+# Especialidad: Utilidades generales
+# ...código original aquí...
