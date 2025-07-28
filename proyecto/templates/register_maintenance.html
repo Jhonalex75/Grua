@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Mantenimiento - Sistema de Mantenimiento</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <i class="fas fa-tools"></i> Sistema de Mantenimiento
+            </a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Encabezado -->
+        <div class="row mb-4">
+            <div class="col">
+                <h1><i class="fas fa-wrench"></i> Registrar Mantenimiento</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Inicio</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('view_equipment', id=equipment.id) }}">{{ equipment.equipment_name }}</a></li>
+                        <li class="breadcrumb-item active">Registrar Mantenimiento</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Mensajes Flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Formulario -->
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-clipboard-list"></i> Detalles del Mantenimiento para {{ equipment.equipment_name }}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ url_for('register_maintenance', id=equipment.id) }}" class="needs-validation" novalidate>
+                            <!-- Fecha del mantenimiento -->
+                            <div class="mb-3">
+                                <label for="date" class="form-label">
+                                    <i class="fas fa-calendar-alt"></i> Fecha del Mantenimiento
+                                </label>
+                                <input type="date" 
+                                       class="form-control" 
+                                       id="date" 
+                                       name="date" 
+                                       required
+                                       value="{{ today.strftime('%Y-%m-%d') }}"
+                                       max="{{ today.strftime('%Y-%m-%d') }}">
+                                <div class="invalid-feedback">
+                                    Por favor seleccione una fecha válida.
+                                </div>
+                            </div>
+
+                            <!-- Tipo de actividad -->
+                            <div class="mb-3">
+                                <label for="activity_type" class="form-label">
+                                    <i class="fas fa-tasks"></i> Tipo de Actividad
+                                </label>
+                                <select class="form-select" id="activity_type" name="activity_type" required>
+                                    <option value="">Seleccione el tipo de actividad</option>
+                                    <option value="Mantenimiento Preventivo">Mantenimiento Preventivo</option>
+                                    <option value="Mantenimiento Correctivo">Mantenimiento Correctivo</option>
+                                    <option value="Inspección">Inspección</option>
+                                    <option value="Reparación">Reparación</option>
+                                    <option value="Calibración">Calibración</option>
+                                    <option value="Limpieza">Limpieza</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Por favor seleccione un tipo de actividad.
+                                </div>
+                            </div>
+
+                            <!-- Costo -->
+                            <div class="mb-3">
+                                <label for="cost" class="form-label">
+                                    <i class="fas fa-dollar-sign"></i> Costo
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" 
+                                           class="form-control" 
+                                           id="cost" 
+                                           name="cost" 
+                                           required 
+                                           min="0"
+                                           step="0.01"
+                                           placeholder="0.00">
+                                    <div class="invalid-feedback">
+                                        Por favor ingrese un costo válido.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Botones de acción -->
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> Registrar Mantenimiento
+                                </button>
+                                <a href="{{ url_for('view_equipment', id=equipment.id) }}" class="btn btn-secondary">
+                                    <i class="fas fa-times"></i> Cancelar
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Validación de formulario -->
+    <script>
+        (function () {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+</body>
+</html>

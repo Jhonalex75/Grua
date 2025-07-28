@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Equipos Registrados{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="fas fa-cogs"></i> Equipos Registrados</h1>
+        <a href="{{ url_for('new_equipment') }}" class="btn btn-primary">
+            <i class="fas fa-plus-circle"></i> Nuevo Equipo
+        </a>
+    </div>
+
+    <!-- Alertas de mantenimiento -->
+    {% if alertas %}
+        <div class="alert alert-warning">
+            <ul class="mb-0">
+                {% for alerta in alertas %}
+                    <li>{{ alerta }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <!-- Tabla de equipos -->
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Equipo</th>
+                    <th>Frecuencia Mant.</th>
+                    <th>Último Mant.</th>
+                    <th>Próximo Mant.</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for equipment in equipments %}
+                <tr>
+                    <td>{{ equipment.equipment_name }}</td>
+                    <td>{{ equipment.maintenance_frequency }} días</td>
+                    <td>
+                        {% if equipment.last_maintenance %}
+                            {{ equipment.last_maintenance.strftime('%Y-%m-%d') }}
+                        {% else %}
+                            No registrado
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if equipment.last_maintenance %}
+                            {% set proximo_mantenimiento = equipment.last_maintenance + timedelta(days=equipment.maintenance_frequency) %}
+                            {{ proximo_mantenimiento.strftime('%Y-%m-%d') }}
+                        {% else %}
+                            <span class="text-muted">No registrado</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ url_for('view_equipment', id=equipment.id) }}" class="btn btn-sm btn-info">
+                            <i class="fas fa-eye"></i> Ver
+                        </a>
+                        <a href="{{ url_for('edit_equipment', id=equipment.id) }}" class="btn btn-sm btn-warning">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <a href="{{ url_for('export_equipment_history', equipment_id=equipment.id) }}" class="btn btn-sm btn-success">
+                            <i class="fas fa-file-excel"></i> Exportar
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted">No hay equipos registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

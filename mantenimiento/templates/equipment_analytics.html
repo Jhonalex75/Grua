@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Análisis Predictivo - {{ equipment.equipment_name }}</h2>
+    
+    <!-- Predicción de Próxima Falla -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>Predicción de Próxima Falla</h4>
+        </div>
+        <div class="card-body">
+            {% if next_failure_prediction %}
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Días hasta próxima falla:</h5>
+                    <h2 class="text-{% if next_failure_prediction.days_until_next < 30 %}danger{% else %}success{% endif %}">
+                        {{ next_failure_prediction.days_until_next }}
+                    </h2>
+                </div>
+                <div class="col-md-4">
+                    <h5>Fecha estimada:</h5>
+                    <p>{{ next_failure_prediction.predicted_date.strftime('%Y-%m-%d') }}</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Confianza del modelo:</h5>
+                    <p>{{ "%.1f"|format(next_failure_prediction.confidence * 100) }}%</p>
+                </div>
+            </div>
+            {% else %}
+            <p>Datos insuficientes para predicción</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Análisis de Fallas -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>Análisis de Fallas</h4>
+        </div>
+        <div class="card-body">
+            {% if failure_data %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="failureTypesChart"></div>
+                </div>
+                <div class="col-md-6">
+                    <div id="downtimeChart"></div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div id="mtbfTrendChart"></div>
+                </div>
+            </div>
+            {% else %}
+            <p>No hay datos de fallas registrados</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Análisis de Repuestos -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>Análisis de Repuestos</h4>
+        </div>
+        <div class="card-body">
+            {% if parts_analysis %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Repuesto</th>
+                            <th>Stock Actual</th>
+                            <th>Consumo Mensual Promedio</th>
+                            <th>Meses hasta Reorden</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for part in parts_analysis %}
+                        <tr>
+                            <td>{{ part.part_name }}</td>
+                            <td>{{ part.current_stock }}</td>
+                            <td>{{ "%.2f"|format(part.avg_monthly_usage) }}</td>
+                            <td>{{ "%.1f"|format(part.months_until_reorder) }}</td>
+                            <td>
+                                <span class="badge bg-{{ 'danger' if part.months_until_reorder < 3 else 'success' }}">
+                                    {{ 'Reorden Próxima' if part.months_until_reorder < 3 else 'OK' }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p>No hay datos de repuestos registrados</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Recomendaciones -->
+    <div class="card">
+        <div class="card-header">
+            <h4>Recomendaciones</h4>
+        </div>
+        <div class="card-body">
+            {% if recommendations %}
+            {% for rec in recommendations %}
+            <div class="alert alert-{{ 'danger' if rec.priority == 'high' else 'warning' }}">
+                <h5>{{ rec.description }}</h5>
+                <ul>
+                    {% for item in rec.action_items %}
+                    <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p>No hay recomendaciones activas</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+{% if failure_data %}
+    // Gráfico de tipos de falla
+    const failureTypes = {{ failure_data.failure_types|tojson }};
+    Plotly.newPlot('failureTypesChart', [{
+        values: Object.values(failureTypes),
+        labels: Object.keys(failureTypes),
+        type: 'pie'
+    }], {
+        title: 'Distribución de Tipos de Falla'
+    });
+    
+    // Gráfico de tiempo de inactividad
+    const downtimeData = {{ failure_data.downtime_by_type|tojson }};
+    Plotly.newPlot('downtimeChart', [{
+        x: Object.keys(downtimeData),
+        y: Object.values(downtimeData),
+        type: 'bar'
+    }], {
+        title: 'Tiempo de Inactividad por Tipo de Falla',
+        yaxis: {title: 'Horas'}
+    });
+    
+    // Gráfico de tendencia MTBF
+    const mtbfTrend = {{ failure_data.mtbf_trend|tojson }};
+    Plotly.newPlot('mtbfTrendChart', [{
+        x: mtbfTrend.map(d => d.date),
+        y: mtbfTrend.map(d => d.mtbf),
+        type: 'scatter',
+        mode: 'lines+markers'
+    }], {
+        title: 'Tendencia MTBF',
+        yaxis: {title: 'Días entre Fallas'}
+    });
+{% endif %}
+</script>
+{% endblock %}

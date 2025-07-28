@@ -1,3 +1,4 @@
+
 # Proyecto: Métodos Numéricos con Python para Ingenieros
 
 Este proyecto tiene como objetivo enseñar métodos numéricos utilizando el lenguaje de programación Python, con un enfoque didáctico e intuitivo para personas sin experiencia previa en programación, especialmente ingenieros mecánicos.
@@ -73,3 +74,6 @@ El proyecto está organizado en capítulos, cada uno enfocado en un tema especí
 *   `Capitulo_11_Lectura_Escritura_Datos/`: Manejo de datos en diferentes formatos de archivo (TXT, CSV, Excel, JSON).
 
 Cada subdirectorio de capítulo contiene scripts de Python (`.py`) con explicaciones detalladas y comentarios para facilitar el aprendizaje.
+# Grua
+Modelacion plan de izaje par grúa y parámetros fundamentales para considerar en un izaje critico
+

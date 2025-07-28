@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../Python Scripts/Lego/robot_educator_basic"
+		},
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"debug.openDebug": "neverOpen",
+		"python.languageServer": "None"
+	}
+}

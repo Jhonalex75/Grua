@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Interactiva ASME B30 - Plan de Izaje</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .content-section { display: none; }
+        .active-section { display: block; }
+        @media (max-width: 768px) {
+            #main-nav { display: none; }
+            #main-nav.show { display: block; }
+        }
+        #crane-image-container, #accessory-image-container {
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9fafb;
+            border: 1px dashed #d1d5db;
+            padding: 1rem;
+        }
+        #crane-image-display {
+            max-width: 100%;
+            max-height: 280px;
+            object-fit: contain;
+            margin-bottom: 0.5rem;
+        }
+        #accessory-image-display img {
+            max-width: 100px;
+            max-height: 100px;
+            object-fit: contain;
+            margin: 0.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.25rem;
+            background-color: white;
+        }
+        .nav-link.active {
+            background-color: #0369a1;
+            font-weight: 600;
+        }
+        .validation-error { color: #DC2626; }
+        .validation-warning { color: #D97706; }
+        .validation-success { color: #059669; }
+        .validation-info { color: #2563EB; }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <header class="bg-sky-700 text-white p-6 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="https://i.postimg.cc/9fpRmqyY/LOGO-GRUA-SIMULADOR-DE-GRUA-PLAN-DE-IZAJE.jpg" alt="Logo App Izaje" class="h-12 mr-3 rounded">
+                <h1 class="text-3xl font-bold">Aplicación Interactiva ASME B30</h1>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+    </header>
+
+    <nav id="main-nav" class="bg-sky-600 text-white p-4 md:block">
+        <div class="container mx-auto flex flex-col md:flex-row md:justify-around space-y-2 md:space-y-0">
+            <a href="#" class="nav-link hover:bg-sky-500 p-2 rounded" data-section="intro">Introducción</a>
+            <a href="#" class="nav-link hover:bg-sky-500 p-2 rounded" data-section="simulador">Simulador P. Izaje</a>
+            <a href="#" class="nav-link hover:bg-sky-500 p-2 rounded" data-section="modulos">Módulos Educativos</a>
+            <a href="#" class="nav-link hover:bg-sky-500 p-2 rounded" data-section="responsabilidades">Responsabilidades</a>
+            <a href="#" class="nav-link hover:bg-sky-500 p-2 rounded" data-section="referencia">Referencia Técnica</a>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-6">
+        <section id="referencia" class="content-section bg-white p-6 rounded-lg shadow">
+            <h2 class="text-2xl font-semibold text-sky-700 mb-4">📘 Referencia Técnica: Selección de Grúas Móviles</h2>
+            <p class="text-gray-700 mb-2">La app integra conceptos del estudio académico "<strong>Optimization Algorithm for Selection and on Site Location of Mobile Cranes</strong>" (Al-Hussein et al., 2005), que propone un algoritmo de optimización para seleccionar la mejor configuración de grúa según el sitio, la carga y los obstáculos.</p>
+            <ul class="list-disc list-inside text-gray-600 mb-4">
+                <li>Permite seleccionar radios de izaje y longitudes de pluma óptimos (Algoritmo-2).</li>
+                <li>Considera obstáculos como edificaciones cercanas y radios de giro.</li>
+                <li>Integra una base de datos de grúas (D-Crane) y un módulo de optimización basado en Excel Solver.</li>
+            </ul>
+            <p class="text-blue-700 underline"><a href="https://www.researchgate.net/publication/228459063" target="_blank">Leer artículo completo en ResearchGate</a></p>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center p-4 mt-8">
+        <p>&copy; <span id="currentYear"></span> App Plan de Izaje Interactivo.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mainNav = document.getElementById('main-nav');
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', e => {
+                    e.preventDefault();
+                    const sectionId = link.getAttribute('data-section');
+                    contentSections.forEach(section => {
+                        section.classList.remove('active-section');
+                        if (section.id === sectionId) {
+                            section.classList.add('active-section');
+                        }
+                    });
+                    navLinks.forEach(lnk => lnk.classList.remove('active'));
+                    link.classList.add('active');
+                });
+            });
+
+            mobileMenuButton.addEventListener('click', () => {
+                mainNav.classList.toggle('show');
+            });
+        });
+    </script>
+</body>
+</html>

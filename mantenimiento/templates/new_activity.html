@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Nueva Actividad</h1>
+    <h4>Equipo: {{ equipment.name }}</h4>
+
+    <form method="POST" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Fecha</label>
+                    <input type="date" name="date" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Tipo de Actividad</label>
+                    <select name="activity_type" class="form-control" required>
+                        <option value="Mantenimiento Preventivo">Mantenimiento Preventivo</option>
+                        <option value="Mantenimiento Correctivo">Mantenimiento Correctivo</option>
+                        <option value="Inspección">Inspección</option>
+                        <option value="Calibración">Calibración</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Técnico</label>
+                    <input type="text" name="technician" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Estado</label>
+                    <select name="status" class="form-control" required>
+                        <option value="Completado">Completado</option>
+                        <option value="En Proceso">En Proceso</option>
+                        <option value="Pendiente">Pendiente</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea name="description" class="form-control" rows="3" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Repuestos Utilizados</label>
+                    <textarea name="parts_replaced" class="form-control" rows="2"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Costo</label>
+                    <input type="number" name="cost" class="form-control" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Observaciones</label>
+                    <textarea name="observations" class="form-control" rows="2"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group mt-3">
+            <label>Documentos</label>
+            <input type="file" name="documents" class="form-control" multiple>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Guardar Actividad</button>
+            <a href="{{ url_for('view_equipment', id=equipment.id) }}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

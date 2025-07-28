@@ -1,0 +1,54 @@
+import pandas as pd
+import openpyxl
+import numpy as np
+
+# Cargar el archivo de Excel
+file_path = "SALIDA MATERIAL.xlsx"  # Asegúrate de que el archivo esté en formato .xlsx
+sheet_name = "Salida de Material"  # Nombre de la hoja donde están los datos
+
+# Cargar los datos
+df = pd.read_excel(file_path, sheet_name=sheet_name)
+
+# Definir los centros de costo de mantenimiento mecánico
+mantenimiento_mecanico = ["Cianuración", "Flotación", "Laboratorio", "Molienda", "Precipitación", "Trituración"]
+
+# Filtrar los datos que correspondan a estos centros de costo
+df_filtered = df[df["Centro de Costo"].isin(mantenimiento_mecanico)]
+
+# Seleccionar solo las columnas necesarias
+df_filtered = df_filtered[["Descripción del producto", "Cantidad", "Valor Unitario", "Centro de Costo", "Fecha"]]
+
+# Convertir la columna de fecha en un formato adecuado
+df_filtered["Fecha"] = pd.to_datetime(df_filtered["Fecha"])
+
+# Filtrar registros desde noviembre 2024 hasta enero 2025
+df_filtered = df_filtered[(df_filtered["Fecha"] >= "2024-11-01") & (df_filtered["Fecha"] <= "2025-01-31")]
+
+# Agrupar los datos por producto y centro de costo
+df_grouped = df_filtered.groupby(["Descripción del producto", "Centro de Costo"]).agg(
+    {"Cantidad": "sum", "Valor Unitario": "mean"}).reset_index()
+
+# Definir los meses del 2025
+meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+
+# Crear una estructura para el DataFrame de proyección
+df_projection = df_grouped.copy()
+
+# Aplicar simulación de Montecarlo para proyectar consumo mensual
+for mes in meses:
+    df_projection[mes] = df_projection["Cantidad"].apply(lambda x: np.random.normal(loc=x/3, scale=x*0.2))
+
+# Redondear valores negativos a cero
+df_projection[meses] = df_projection[meses].clip(lower=0)
+
+# Agregar columna de Total Anual
+df_projection["Total Anual"] = df_projection[meses].sum(axis=1)
+
+# Reordenar columnas
+df_projection = df_projection[["Descripción del producto", "Centro de Costo", "Cantidad", "Valor Unitario"] + meses + ["Total Anual"]]
+
+# Guardar en un nuevo archivo o en una nueva hoja del archivo existente
+with pd.ExcelWriter(file_path, mode="a", engine="openpyxl", if_sheet_exists="replace") as writer:
+    df_projection.to_excel(writer, sheet_name="Proyección Mantenimiento", index=False)
+
+print("Proceso completado: Se ha generado la hoja 'Proyección Mantenimiento' en el archivo Excel.")
