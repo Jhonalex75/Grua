@@ -1,0 +1,3 @@
+# Script de gráficos y visualización de datos
+# Especialidad: Ingeniería / Visualización
+# ...código original aquí...

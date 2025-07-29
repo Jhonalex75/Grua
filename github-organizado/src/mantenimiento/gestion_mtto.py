@@ -1,3 +1,0 @@
-# Script de gestión de mantenimiento
-# Especialidad: Mantenimiento industrial
-# ...código original aquí...

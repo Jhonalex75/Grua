@@ -1,0 +1,3 @@
+# Script de estadística aplicada
+# Especialidad: Estadística y análisis de datos
+# ...código original aquí...

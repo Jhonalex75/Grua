@@ -1,3 +1,0 @@
-# Script de métodos numéricos
-# Especialidad: Ingeniería / Métodos Numéricos
-# ...código original aquí...

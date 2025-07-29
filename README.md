@@ -59,21 +59,26 @@ Si todo está configurado correctamente, verás un mensaje de éxito en la termi
 
 ## Estructura del Proyecto
 
-El proyecto está organizado en capítulos, cada uno enfocado en un tema específico de métodos numéricos, con ejercicios prácticos en Python. Además, se incluye un capítulo dedicado a la interfaz gráfica de usuario.
+El repositorio está organizado para que cualquier usuario, incluso sin experiencia en programación, pueda navegarlo fácilmente y aprovechar todos los recursos educativos. La estructura principal es la siguiente:
 
-*   `Capitulo_01_Fundamentos_Python/`: Conceptos básicos de Python, NumPy y Matplotlib.
-*   `Capitulo_02_Raices_Ecuaciones/`: Métodos para encontrar raíces de ecuaciones (Bisección, Newton-Raphson, Secante, Falsa Posición).
-*   `Capitulo_03_Sistemas_Ecuaciones_Lineales/`: Métodos para resolver sistemas de ecuaciones lineales (Eliminación Gaussiana, Descomposición LU, Jacobi, Gauss-Seidel).
-*   `Capitulo_04_Ajuste_Curvas_Interpolacion/`: Técnicas para ajustar curvas e interpolar datos (Regresión Lineal, Interpolación Lineal, Lagrange, Splines Cúbicos).
-*   `Capitulo_05_Diferenciacion_Integracion_Numerica/`: Métodos para diferenciación e integración numérica (Diferenciación, Regla del Trapecio, Simpson, SciPy Integrate).
-*   `Capitulo_06_Ecuaciones_Diferenciales_Ordinarias/`: Métodos para resolver Ecuaciones Diferenciales Ordinarias (Euler, Runge-Kutta, Sistemas de EDOs, SciPy solve_ivp).
-*   `Capitulo_07_Interfaz_Grafica_Usuario/`: Ejemplos y scripts relacionados con la creación de interfaces gráficas de usuario con Tkinter.
-*   `Capitulo_08_Valores_Vectores_Propios/`: Conceptos y aplicaciones de valores y vectores propios en ingeniería.
-*   `Capitulo_09_Problemas_Valor_Frontera/`: Métodos para resolver problemas de valor en la frontera (Método de Disparo, Diferencias Finitas).
-*   `Capitulo_10_Transformadas_Fourier/`: Análisis de señales en el dominio de la frecuencia (DFT, FFT, aplicaciones).
-*   `Capitulo_11_Lectura_Escritura_Datos/`: Manejo de datos en diferentes formatos de archivo (TXT, CSV, Excel, JSON).
+- **`main_gui_app.py`**: Es la aplicación principal con interfaz gráfica (GUI). Se recomienda iniciar el estudio desde aquí, ya que permite navegar los capítulos y ejemplos de manera intuitiva.
 
-Cada subdirectorio de capítulo contiene scripts de Python (`.py`) con explicaciones detalladas y comentarios para facilitar el aprendizaje.
+- **Capítulos de Métodos Numéricos**
+    - `Capitulo_01_Fundamentos_Python/` a `Capitulo_11_Lectura_Escritura_Datos/`: Cada carpeta corresponde a un tema fundamental de métodos numéricos, con ejercicios prácticos y explicaciones paso a paso.
+
+- **`Ejemplos_y_Scripts/`**: Contiene notebooks, scripts, gráficos y hojas de cálculo adicionales, independientes de los capítulos principales. Aquí encontrarás ejemplos prácticos, materiales de apoyo y recursos para experimentar.
+
+- **`Recursos_Graficos/`**: Imágenes, diagramas y gráficos utilizados en los capítulos y ejemplos. Útil para visualizar conceptos y resultados.
+
+- **`Datos_y_Documentos/`**: Archivos de datos (Excel, CSV, bases de datos) y documentos PDF de referencia. Estos recursos pueden ser utilizados por los scripts y notebooks, o consultados como material de apoyo.
+
+- **`Documentacion_Adicional/`**: Manuales, guías, informes, carpetas de proyectos anteriores y cualquier documentación complementaria relevante para el aprendizaje o referencia.
+
+Cada carpeta contiene un archivo `README.md` explicando su contenido y propósito. Si tienes dudas sobre dónde encontrar o guardar un archivo, consulta el README correspondiente o inicia desde la aplicación GUI.
+
+---
+
+> **Recomendación:** Si eres nuevo, comienza por ejecutar `main_gui_app.py` para navegar el contenido de forma guiada y sencilla.
 # Grua
 Modelacion plan de izaje par grúa y parámetros fundamentales para considerar en un izaje critico
 

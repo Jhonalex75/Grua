@@ -1,3 +1,0 @@
-# Scripts de análisis de Opex y proyecciones
-# Especialidad: Análisis financiero y de operaciones
-# ...código original aquí...
