@@ -1,82 +1,63 @@
-# GRÚA — Análisis simplificado de cargas y estabilidad
+# Curso de Python para Ingeniería: Proyecto Grúa
 
-## Objetivo
-Proveer una guía para estimar cargas, reacciones, tensiones en cable y verificación de estabilidad para una grúa sencilla (pluma + base), con enfoque didáctico.
+Bienvenido al curso práctico de Python aplicado a la ingeniería. Este repositorio contiene el material completo del curso, estructurado por capítulos, utilizando el análisis de una grúa como hilo conductor.
 
-## Alcance y supuestos
-- Pluma rígida en plano, cable ideal salvo peso propio despreciable.
-- Apoyos definidos (pivote/base y apoyo secundario si aplica).
-- Análisis estático cuasiestático; sin dinámica ni ráfagas de viento.
+## 📚 Contenido del Curso
 
-## Teoría esencial
-- Equilibrio en 2D:  
-  \( \sum F_x = 0, \; \sum F_y = 0, \; \sum M_O = 0 \)
-- Tensión en cable por momentos:
-  \[ T = \frac{W\,r_W + W_p\,r_p - R_c\,r_c}{r_T} \]
-  Donde `r_*` son brazos respecto a un punto `O` (pivote/base), y `R_c` reacciones si corresponden.
-- Reacciones en base: despejes de ecuaciones de equilibrio.
-- Estabilidad (antivuelco):  
-  \( M_{resistente} > M_{vuelco} \cdot SF \), SF típico ≥ 1.5–2 (adaptar a norma).
+### Fundamentos y Cálculo Numérico
+*   **[Capítulo 1: Fundamentos de Python](./Capitulo_01_Fundamentos_Python)** - Sintaxis básica, variables y control de flujo.
+*   **[Capítulo 2: Raíces de Ecuaciones](./Capitulo_02_Raices_Ecuaciones)** - Métodos de bisección, Newton-Raphson.
+*   **[Capítulo 3: Sistemas de Ecuaciones Lineales](./Capitulo_03_Sistemas_Ecuaciones_Lineales)** - Matrices y solución de sistemas.
+*   **[Capítulo 4: Ajuste de Curvas e Interpolación](./Capitulo_04_Ajuste_Curvas_Interpolacion)** - Regresión lineal y polinómica.
 
-## Entradas
-- `W` carga suspendida [N]
-- `L` longitud de pluma [m], `theta` ángulo respecto a la horizontal [rad o deg]
-- `m_pluma` masa de la pluma [kg] (opcional) → `W_p=m_pluma*g`
-- `r_T` brazo del cable, `r_W` brazo de la carga, `r_p` del peso pluma [m]
-- `SF_estab` factor de seguridad de estabilidad
+### Cálculo Avanzado
+*   **[Capítulo 5: Diferenciación e Integración Numérica](./Capitulo_05_Diferenciacion_Integracion_Numerica)**
+*   **[Capítulo 6: Ecuaciones Diferenciales Ordinarias](./Capitulo_06_Ecuaciones_Diferenciales_Ordinarias)** - Modelado dinámico.
+*   **[Capítulo 8: Valores y Vectores Propios](./Capitulo_08_Valores_Vectores_Propios)** - Análisis de estabilidad.
+*   **[Capítulo 9: Problemas de Valor Frontera](./Capitulo_09_Problemas_Valor_Frontera)**
+*   **[Capítulo 10: Transformadas de Fourier](./Capitulo_10_Transformadas_Fourier)** - Análisis de señales.
 
-## Salidas
-- `T` tensión estimada en el cable [N]
-- Reacciones en base (`R_ax`, `R_ay`, momento si aplica)
-- Verificación de estabilidad (`cumple` / `no cumple`)
+### Aplicaciones Prácticas
+*   **[Capítulo 7: Interfaz Gráfica de Usuario (GUI)](./Capitulo_07_Interfaz_Grafica_Usuario)** - Creación de apps con Tkinter/Qt.
+*   **[Capítulo 11: Lectura y Escritura de Datos](./Capitulo_11_Lectura_Escritura_Datos)** - Manejo de archivos CSV, JSON, Excel.
 
-## Procedimiento
-1) Define sistema y punto de momentos `O` (pivote/base). Calcula brazos `r_*` geométricamente con `L` y `theta`.
-2) Aplica \(\sum M_O=0\) para estimar `T` y/o reacciones.
-3) Aplica \(\sum F_x=0\), \(\sum F_y=0\) para cerrar el sistema.
-4) Estabilidad: compara momentos estabilizadores vs de vuelco con `SF_estab`.
+## 🏗️ Análisis de Estabilidad para Planes de Izaje Crítico
 
-## Ejemplo numérico (simplificado)
-- Datos: `W=5000 N`, `L=3 m`, `theta=45°`, `m_pluma=15 kg` (→ `W_p≈147 N`), `r_W=2.6 m`, `r_p=1.5 m`, `r_T=2.9 m`, `SF_estab=1.8`.
-- Tensión: \( T \approx (W\,r_W + W_p\,r_p)/r_T = (5000\cdot2.6 + 147\cdot1.5)/2.9 \approx 4483\,N \)
-- Verifica reacciones en base con \(\sum F\) y \(\sum M\).
-- Estabilidad: evalúa \( M_{res} \) vs \( M_{vuelco} \).
+Este curso incluye un módulo especializado en la modelación de planes de izaje, fundamental para operaciones seguras en ingeniería civil y mecánica.
 
-## Uso (rápido) con Python
-```bash
-python -m venv .venv && .\.venv\Scripts\activate
-pip install numpy
-```
-```python
-import numpy as np
+### Definición de Izaje Crítico
+Un izaje se considera crítico cuando supera el **75% de la capacidad bruta** de la grúa, involucra cargas complejas, o se realiza en condiciones ambientales adversas.
 
-g = 9.81
-W = 5000.0
-L = 3.0
-theta = np.deg2rad(45)
-m_pluma = 15.0
-Wp = m_pluma*g
-r_W = 2.6
-r_p = 1.5
-r_T = 2.9
+### Variables Clave del Modelo
+El módulo de análisis (ver Capítulos 2 y 6) permite calcular la estabilidad basándose en:
+*   **Radio de Trabajo ($R$):** Distancia horizontal desde el centro de rotación hasta el centro de gravedad de la carga.
+*   **Longitud de Pluma ($L$):** Extensión total de la pluma telescópica o reticulada.
+*   **Ángulo de Pluma ($\theta$):** Ángulo respecto a la horizontal; determina la capacidad de carga.
+*   **Contrapeso:** Masa necesaria para contrarrestar el momento de vuelco.
 
-T = (W*r_W + Wp*r_p)/r_T
-print({"Tension_N": T})
-```
+> **Nota:** Los scripts de este curso permiten verificar si un punto de operación $(R, \text{Carga})$ se encuentra dentro de la zona segura de la curva de capacidad.
 
-## Validación y notas
-- Considera el peso del gancho, accesorios y fricción en poleas reales.
-- Ajusta `SF_estab` según normativa local/industrial.
-- Para diseños reales, realizar análisis de resistencia (esfuerzos en pluma, uniones, cimientos) y revisión por profesional responsable.
+## 🎓 Objetivos de Aprendizaje
+Al finalizar este curso, serás capaz de:
+1.  Dominar la sintaxis de Python para aplicaciones científicas.
+2.  Implementar métodos numéricos para resolver problemas de ingeniería.
+3.  Crear visualizaciones profesionales de datos y resultados.
+4.  Desarrollar aplicaciones de escritorio con interfaz gráfica.
 
-## Pruebas sugeridas
-- Consistencia geométrica: si `theta` aumenta (más vertical), ver impacto en `r_*` y `T`.
-- Límites: `W=0`, `m_pluma=0`.
+## 📝 Requisitos Previos
+*   **Software:** Python 3.8+, VS Code (o IDE de preferencia).
+*   **Conocimientos:** Conceptos básicos de álgebra lineal y cálculo.
 
-## Roadmap
-- Optimización de geometría por límite de `T` y estabilidad.
-- Visualización de diagrama de cuerpo libre.
-- Integración con selección de cable/polipasto.
+## 🚀 Cómo usar este repositorio
+1.  Clona el repositorio:
+    ```bash
+    git clone https://github.com/Jhonalex75/grua_python.git
+    ```
+2.  Instala las dependencias generales:
+    ```bash
+    pip install -r requirements.txt
+    ```
+3.  Navega a cada capítulo para ver los scripts y ejercicios específicos.
 
-## Licencia
-MIT (o la del repositorio donde se utilice).
+## 📄 Licencia
+Este material educativo está bajo la Licencia MIT.
